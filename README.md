@@ -1,9 +1,13 @@
-# Magritte
-==========
+Magritte
+========
 
 Ceci n'est pas une pomme.
 
-## Reference
+# Configuration
+
+- #60 [TensorFlow nightly Android build](https://ci.tensorflow.org/view/Nightly/job/nightly-android/)
+
+# Reference
 
 - [TensorFlow Android example](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/android/)
 - [Android Things TensorFlow Image Classifier](https://github.com/androidthings/sample-tensorflow-imageclassifier)
