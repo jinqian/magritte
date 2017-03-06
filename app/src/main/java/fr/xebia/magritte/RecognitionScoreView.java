@@ -27,6 +27,7 @@ import java.util.List;
 import fr.xebia.magritte.Classifier.Recognition;
 
 public class RecognitionScoreView extends View implements ResultsView {
+
     private static final float TEXT_SIZE_DIP = 24;
     private List<Recognition> results;
     private final float textSizePx;

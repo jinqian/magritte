@@ -230,6 +230,7 @@ public class CameraConnectionFragment extends Fragment {
 
     private final ConnectionCallback cameraConnectionCallback;
 
+    // TODO replace by a new instance method & pass param in Bundle
     private CameraConnectionFragment(
             final ConnectionCallback connectionCallback,
             final OnImageAvailableListener imageListener,

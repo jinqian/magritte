@@ -16,16 +16,11 @@ limitations under the License.
 package fr.xebia.magritte.env;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.media.Image;
 import android.os.Environment;
-
-import junit.framework.Assert;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.nio.ByteBuffer;
 
 /**
  * Utility class for manipulating images.
@@ -84,25 +79,8 @@ public class ImageUtils {
         }
     }
 
-
-    public static int[] convertImageToBitmap(Image image, int[] output, byte[][] cachedYuvBytes) {
-        if (cachedYuvBytes == null || cachedYuvBytes.length != 3) {
-            cachedYuvBytes = new byte[3][];
-        }
-        Image.Plane[] planes = image.getPlanes();
-        fillBytes(planes, cachedYuvBytes);
-
-        final int yRowStride = planes[0].getRowStride();
-        final int uvRowStride = planes[1].getRowStride();
-        final int uvPixelStride = planes[1].getPixelStride();
-
-        convertYUV420ToARGB8888(cachedYuvBytes[0], cachedYuvBytes[1], cachedYuvBytes[2],
-                image.getWidth(), image.getHeight(), yRowStride, uvRowStride, uvPixelStride, output);
-        return output;
-    }
-
     public static void convertYUV420ToARGB8888(byte[] yData, byte[] uData, byte[] vData, int width, int height,
-                                                int yRowStride, int uvRowStride, int uvPixelStride, int[] out) {
+                                               int yRowStride, int uvRowStride, int uvPixelStride, int[] out) {
         int i = 0;
         for (int y = 0; y < height; y++) {
             int pY = yRowStride * y;
@@ -149,44 +127,6 @@ public class ImageUtils {
         nB = (nB >> 10) & 0xff;
 
         return 0xff000000 | (nR << 16) | (nG << 8) | nB;
-    }
-
-    private static void fillBytes(final Image.Plane[] planes, final byte[][] yuvBytes) {
-        // Because of the variable row stride it's not possible to know in
-        // advance the actual necessary dimensions of the yuv planes.
-        for (int i = 0; i < planes.length; ++i) {
-            final ByteBuffer buffer = planes[i].getBuffer();
-            if (yuvBytes[i] == null || yuvBytes[i].length != buffer.capacity()) {
-                yuvBytes[i] = new byte[buffer.capacity()];
-            }
-            buffer.get(yuvBytes[i]);
-        }
-    }
-
-
-    public static void cropAndRescaleBitmap(final Bitmap src, final Bitmap dst, int sensorOrientation) {
-        Assert.assertEquals(dst.getWidth(), dst.getHeight());
-        final float minDim = Math.min(src.getWidth(), src.getHeight());
-
-        final Matrix matrix = new Matrix();
-
-        // We only want the center square out of the original rectangle.
-        final float translateX = -Math.max(0, (src.getWidth() - minDim) / 2);
-        final float translateY = -Math.max(0, (src.getHeight() - minDim) / 2);
-        matrix.preTranslate(translateX, translateY);
-
-        final float scaleFactor = dst.getHeight() / minDim;
-        matrix.postScale(scaleFactor, scaleFactor);
-
-        // Rotate around the center if necessary.
-        if (sensorOrientation != 0) {
-            matrix.postTranslate(-dst.getWidth() / 2.0f, -dst.getHeight() / 2.0f);
-            matrix.postRotate(sensorOrientation);
-            matrix.postTranslate(dst.getWidth() / 2.0f, dst.getHeight() / 2.0f);
-        }
-
-        final Canvas canvas = new Canvas(dst);
-        canvas.drawBitmap(src, matrix, null);
     }
 
     /**

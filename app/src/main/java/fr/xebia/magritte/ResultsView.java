@@ -20,5 +20,6 @@ import java.util.List;
 import fr.xebia.magritte.Classifier.Recognition;
 
 public interface ResultsView {
-    public void setResults(final List<Recognition> results);
+
+    void setResults(final List<Recognition> results);
 }
