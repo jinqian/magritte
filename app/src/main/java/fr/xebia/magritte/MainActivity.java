@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void onOpenCamera(View view) {
+    public void onStartApp(View view) {
         startActivity(new Intent(this, ClassifierActivity.class));
     }
 }
