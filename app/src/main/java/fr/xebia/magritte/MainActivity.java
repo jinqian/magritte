@@ -14,6 +14,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onStartApp(View view) {
-        startActivity(new Intent(this, ClassifierActivity.class));
+        startActivity(new Intent(this, LevelActivity.class));
     }
 }
